@@ -12,22 +12,27 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=lib/common.sh
 source "$SCRIPT_DIR/lib/common.sh"
 
+# Guardar o AS_ROOT antes de fazer source dos modulos, porque cada modulo
+# redefine SCRIPT_DIR quando e carregado via source (BASH_SOURCE[0] aponta
+# para o modulo, nao para o asmenu.sh), corrompendo os paths seguintes.
+_ASMENU_ROOT="$AS_ROOT"
+
 # shellcheck source=modulos/dns.sh
-source "$SCRIPT_DIR/modulos/dns.sh"
+source "$_ASMENU_ROOT/modulos/dns.sh"
 # shellcheck source=modulos/web.sh
-source "$SCRIPT_DIR/modulos/web.sh"
+source "$_ASMENU_ROOT/modulos/web.sh"
 # shellcheck source=modulos/samba.sh
-source "$SCRIPT_DIR/modulos/samba.sh"
+source "$_ASMENU_ROOT/modulos/samba.sh"
 # shellcheck source=modulos/nfs.sh
-source "$SCRIPT_DIR/modulos/nfs.sh"
+source "$_ASMENU_ROOT/modulos/nfs.sh"
 # shellcheck source=modulos/backup.sh
-source "$SCRIPT_DIR/modulos/backup.sh"
+source "$_ASMENU_ROOT/modulos/backup.sh"
 # shellcheck source=modulos/raid.sh
-source "$SCRIPT_DIR/modulos/raid.sh"
+source "$_ASMENU_ROOT/modulos/raid.sh"
 # shellcheck source=modulos/fail2ban.sh
-source "$SCRIPT_DIR/modulos/fail2ban.sh"
+source "$_ASMENU_ROOT/modulos/fail2ban.sh"
 # shellcheck source=modulos/portknock.sh
-source "$SCRIPT_DIR/modulos/portknock.sh"
+source "$_ASMENU_ROOT/modulos/portknock.sh"
 
 _banner() {
     clear
