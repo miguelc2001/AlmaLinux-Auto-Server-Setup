@@ -101,6 +101,9 @@ _aplicar() {
 _restorecon_named() {
     restorecon -R "$NAMED_ZONES_DIR" 2>/dev/null || true
     chown -R root:named "$NAMED_ZONES_DIR" 2>/dev/null || true
+    # Garantir que named pode escrever os seus ficheiros de runtime
+    # (data/named.run, etc.) mesmo a correr o menu com sudo
+    chown -R named:named /var/named/data /var/named/dynamic 2>/dev/null || true
 }
 
 # ------------------------------------------------------------
