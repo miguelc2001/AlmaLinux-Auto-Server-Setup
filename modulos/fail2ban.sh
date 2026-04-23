@@ -62,8 +62,10 @@ EOF
         ok "jail.local ja existe - nao sobrescrevi"
     fi
 
-    systemctl enable --now fail2ban
-    ok "fail2ban instalado e ativo"
+    systemctl enable fail2ban
+    systemctl restart fail2ban
+    systemctl is-active --quiet fail2ban && ok "fail2ban instalado e ativo" \
+        || erro "fail2ban falhou a arrancar - ver 'systemctl status fail2ban'"
 }
 
 _estado_jail() {

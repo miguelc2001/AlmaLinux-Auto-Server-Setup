@@ -84,8 +84,8 @@ main_menu() {
   4) NFS                            [Ponto 7]
   5) Backups (tar + rsync)          [Ponto 9]
   6) RAID 5                         [Ponto 10]
-  7) fail2ban                       [Ponto 11 - 2v]
-  8) Port Knocking                  [Ponto 12 - 2v]
+  7) fail2ban                       [Ponto 11]
+  8) Port Knocking                  [Ponto 12]
   ---------------------------------------------------
   9) Ver log / snapshots de config
   s) Estado dos servicos

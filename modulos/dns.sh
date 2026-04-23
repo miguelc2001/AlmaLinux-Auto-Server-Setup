@@ -203,8 +203,11 @@ dns_add_registo() {
             ;;
         3)
             local alias alvo
-            ler alias "Alias" ""
-            ler alvo "Destino (ex: www)" ""
+            ler alias "Alias (ex: ftp)" ""
+            ler alvo "Destino (ex: www ou www.${dominio}.)" ""
+            # Garantir ponto final - sem ele o BIND trata como relativo
+            # e duplica o dominio (www -> www.exemplo.pt.exemplo.pt.)
+            [[ "$alvo" != *. ]] && alvo="${alvo}.${dominio}."
             entrada="${alias}   IN  CNAME   ${alvo}"
             ;;
         *) erro "Opcao invalida"; return 1;;
