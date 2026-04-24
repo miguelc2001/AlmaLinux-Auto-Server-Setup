@@ -145,7 +145,7 @@ bkp_restore_tar_info() {
 bkp_menu() {
     while true; do
         echo
-        title "Backups (Ponto 9)"
+        title "Backups"
         cat <<EOF
   1) Backup tar (ficheiros/configs criticos)
   2) Backup rsync incremental forever (/home)

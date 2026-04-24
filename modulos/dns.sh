@@ -375,12 +375,12 @@ dns_menu() {
         echo
         title "DNS (BIND)"
         cat <<EOF
-  1) Criar zona forward (master)         [Ponto 1]
-  2) Adicionar registo A/MX/CNAME        [Ponto 4]
-  3) Criar zona reverse                  [Ponto 5]
-  4) Eliminar zona (forward ou reverse)  [Ponto 6]
+  1) Criar zona forward (master)
+  2) Adicionar registo A/MX/CNAME
+  3) Criar zona reverse
+  4) Eliminar zona (forward ou reverse)
   5) Listar zonas
-  --- Blacklist ------------------------ [Ponto 13a]
+  --- Blacklist ---
   6) Listar blacklist
   7) Adicionar dominio a blacklist
   8) Remover dominio da blacklist

@@ -121,7 +121,7 @@ pk_fechar_cliente() {
 pk_menu() {
     while true; do
         echo
-        title "Port Knocking (Ponto 12)"
+        title "Port Knocking"
         cat <<EOF
   --- SERVIDOR (configurar esta maquina) ---
   1) Instalar e configurar knockd (+ fechar SSH)

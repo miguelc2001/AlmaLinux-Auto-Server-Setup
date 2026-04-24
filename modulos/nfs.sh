@@ -162,7 +162,7 @@ nfs_testar_mount_local() {
 nfs_menu() {
     while true; do
         echo
-        title "NFS (Ponto 7)"
+        title "NFS"
         cat <<EOF
   1) Criar export
   2) Alterar export

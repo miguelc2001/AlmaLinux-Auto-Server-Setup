@@ -78,14 +78,14 @@ main_menu() {
     while true; do
         _banner
         cat <<EOF
-  1) DNS (BIND)                     [Pontos 1, 4, 5, 6, 13a]
-  2) Web / Apache VirtualHosts      [Pontos 3, 6]
-  3) SAMBA                          [Ponto 2]
-  4) NFS                            [Ponto 7]
-  5) Backups (tar + rsync)          [Ponto 9]
-  6) RAID 5                         [Ponto 10]
-  7) fail2ban                       [Ponto 11]
-  8) Port Knocking                  [Ponto 12]
+  1) DNS (BIND)
+  2) Web / Apache VirtualHosts
+  3) SAMBA
+  4) NFS
+  5) Backups (tar + rsync)
+  6) RAID 5
+  7) fail2ban
+  8) Port Knocking
   ---------------------------------------------------
   9) Ver log / snapshots de config
   s) Estado dos servicos

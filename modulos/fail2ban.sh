@@ -127,7 +127,7 @@ f2b_reiniciar() {
 f2b_menu() {
     while true; do
         echo
-        title "fail2ban (Ponto 11)"
+        title "fail2ban"
         cat <<EOF
   1) Instalar + configurar jail sshd
   2) Estado do jail sshd

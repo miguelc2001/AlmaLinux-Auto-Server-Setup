@@ -132,8 +132,8 @@ web_menu() {
         echo
         title "Apache / VirtualHosts"
         cat <<EOF
-  1) Criar VirtualHost + pagina boas-vindas   [Ponto 3]
-  2) Eliminar VirtualHost                     [Ponto 6]
+  1) Criar VirtualHost + pagina boas-vindas
+  2) Eliminar VirtualHost
   3) Listar VirtualHosts
   0) Voltar
 EOF

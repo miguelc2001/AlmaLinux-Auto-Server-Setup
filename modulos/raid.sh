@@ -136,7 +136,7 @@ raid_destruir() {
 raid_menu() {
     while true; do
         echo
-        title "RAID 5 (Ponto 10)"
+        title "RAID 5"
         cat <<EOF
   1) Listar discos disponiveis
   2) Criar RAID 5

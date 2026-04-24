@@ -232,7 +232,7 @@ samba_montar_windows() {
 samba_menu() {
     while true; do
         echo
-        title "SAMBA (Ponto 2)"
+        title "SAMBA"
         cat <<EOF
   1) Criar partilha (Linux -> Windows)
   2) Alterar partilha
