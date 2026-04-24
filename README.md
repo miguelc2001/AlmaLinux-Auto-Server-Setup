@@ -75,41 +75,6 @@ Cada opção do menu corresponde a um ou mais pontos do enunciado.
 
 ---
 
-## Mapeamento Pontos → Scripts
-
-| Ponto | Descrição | Valor | Script principal | Opção no menu |
-|-------|-----------|-------|-----------------|---------------|
-| 1 | Criar zona forward DNS (master) | 1 | modulos/dns.sh | DNS > 1 |
-| 2 | SAMBA — CRUD de partilhas + montagem Windows | 1 | modulos/samba.sh | SAMBA |
-| 3 | VirtualHost Apache + página de boas-vindas | 1 | modulos/web.sh | Web > 1 |
-| 4 | Registos A, MX e CNAME | 1 | modulos/dns.sh | DNS > 2 |
-| 5 | Zona reverse | 1 | modulos/dns.sh | DNS > 3 |
-| 6 | Eliminar zonas forward, reverse e VirtualHosts | 1 | dns.sh + web.sh | DNS > 4, Web > 2 |
-| 7 | NFS — CRUD de exports + teste de montagem | 1 | modulos/nfs.sh | NFS |
-| 8 | Melhorias e inovações (ver secção abaixo) | 1 | (transversal) | — |
-| 9 | Backups com tar + rsync incremental forever | 1 | modulos/backup.sh | Backups |
-| 10 | RAID nível 5 | 1 | modulos/raid.sh | RAID 5 |
-| 11 | fail2ban — protecção SSH contra brute force | 2 | modulos/fail2ban.sh | fail2ban |
-| 12 | Port knocking — cliente e servidor | 2 | modulos/portknock.sh | Port Knocking |
-| 13a | DNS blacklist — inserção e remoção de domínios | 2 | modulos/dns.sh | DNS > 6-8 |
-
----
-
-## Ponto 8 — Melhorias e Inovações
-
-Funcionalidades adicionais implementadas e demonstráveis na discussão:
-
-- **Validação de input** — todos os IPs e FQDNs são validados por expressão regular antes de qualquer acção (`lib/validate.sh`).
-- **Snapshot automático antes de editar** — qualquer escrita em ficheiros de configuração (`/etc/named.conf`, `smb.conf`, `/etc/exports`, VirtualHosts, etc.) cria primeiro uma cópia com timestamp em `/var/backups/as-projeto/` (`lib/backup.sh`).
-- **Serial SOA com auto-incremento** — ao adicionar um registo a uma zona, o serial é actualizado automaticamente no formato `YYYYMMDDNN`.
-- **Validação sintáctica antes de aplicar** — o DNS usa `named-checkconf` e `named-checkzone`; o Apache usa `httpd -t`; o Samba usa `testparm`. Se a validação falhar, o reload não é efectuado.
-- **SELinux aware** — os contextos SELinux são aplicados correctamente para cada serviço (`httpd_sys_content_t`, `samba_share_t`, `public_content_rw_t`) e os booleans relevantes são activados.
-- **Logging auditável** — todas as acções ficam registadas em `/var/log/as-projeto.log` com timestamp e nível de severidade.
-- **Idempotência** — todos os scripts verificam a existência de configurações antes de criar e avisam em vez de falhar.
-- **`uninstall.sh`** — permite limpar todas as configurações criadas e voltar a testar a partir do zero, útil na discussão.
-
----
-
 ## Testes Rápidos
 
 ### DNS (na máquina cliente ou no próprio servidor)
