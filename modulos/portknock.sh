@@ -118,6 +118,34 @@ pk_fechar_cliente() {
     ok "Sequencia de fecho enviada."
 }
 
+pk_remover() {
+    title "Remover configuracao knockd"
+    confirmar "Isto vai parar o knockd e reabrir o SSH no firewalld. Continuar?" || return 0
+
+    # Parar e desativar knockd
+    systemctl stop knockd 2>/dev/null || true
+    systemctl disable knockd 2>/dev/null || true
+    ok "knockd parado e desativado"
+
+    # Restaurar SSH no firewalld
+    if ! firewall-cmd --list-services 2>/dev/null | grep -qw ssh; then
+        firewall-cmd --permanent --add-service=ssh >/dev/null 2>&1 || true
+        firewall-cmd --reload >/dev/null 2>&1 || true
+        ok "SSH reaberto no firewalld"
+    else
+        info "SSH ja estava aberto no firewalld"
+    fi
+
+    # Remover knockd.conf
+    if [[ -f "$KNOCKD_CONF" ]]; then
+        backup_file "$KNOCKD_CONF"
+        rm -f "$KNOCKD_CONF"
+        ok "knockd.conf removido (backup guardado)"
+    fi
+
+    ok "Port knocking removido. SSH acessivel normalmente."
+}
+
 pk_menu() {
     while true; do
         echo
@@ -126,17 +154,19 @@ pk_menu() {
   --- SERVIDOR (configurar esta maquina) ---
   1) Instalar e configurar knockd (+ fechar SSH)
   2) Estado do knockd e firewalld
+  3) Remover knockd (+ reabrir SSH)
   --- CLIENTE (bater a porta de outra maquina) ---
-  3) Cliente: abrir SSH (knock + ssh)
-  4) Cliente: enviar sequencia de fecho
+  4) Cliente: abrir SSH (knock + ssh)
+  5) Cliente: enviar sequencia de fecho
   0) Voltar
 EOF
         local opc; ler opc "Opcao" "0"
         case "$opc" in
             1) pk_instalar_servidor ;;
             2) pk_estado ;;
-            3) pk_cliente ;;
-            4) pk_fechar_cliente ;;
+            3) pk_remover ;;
+            4) pk_cliente ;;
+            5) pk_fechar_cliente ;;
             0) return 0 ;;
             *) warn "Opcao invalida" ;;
         esac
