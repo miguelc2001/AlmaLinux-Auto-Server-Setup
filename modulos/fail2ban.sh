@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================
-# modulos/fail2ban.sh - Ponto 11 (2 valores)
+# modulos/fail2ban.sh - Ponto 11
 # ============================================================
 # Operacoes:
 #   - Instalar e configurar fail2ban para proteger SSH contra

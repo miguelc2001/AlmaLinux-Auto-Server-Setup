@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================
-# modulos/dns.sh - BIND / DNS (Pontos 1, 4, 5, 6, 13a)
+# modulos/dns.sh - BIND / DNS (Pontos 1, 4, 5, 6, 13)
 # ============================================================
 # Operacoes:
 #   - Criar zona forward (master) para um dominio (Ponto 1)
@@ -8,7 +8,7 @@
 #   - Criar zona reverse a partir de IP+FQDN (Ponto 5)
 #   - Eliminar zona forward (Ponto 6)
 #   - Eliminar zona reverse (Ponto 6)
-#   - Gerir blacklist de dominios (Ponto 13a)
+#   - Gerir blacklist de dominios (Ponto 13)
 #
 # Todas as escritas em named.conf fazem backup primeiro,
 # e no fim faz-se 'named-checkconf' + 'named-checkzone' antes

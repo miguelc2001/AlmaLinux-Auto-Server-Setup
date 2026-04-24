@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================
-# modulos/portknock.sh - Ponto 12 (2 valores)
+# modulos/portknock.sh - Ponto 12
 # ============================================================
 # Implementa dois modos:
 #   - SERVIDOR: configura knockd com uma sequencia de portas.
