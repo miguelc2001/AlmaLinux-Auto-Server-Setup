@@ -17,12 +17,33 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../lib/common.sh"
 
 _listar_exports() {
+    # Mostra todos os exports (ativos e desativados)
+    # Desativados aparecem com prefixo [DESATIVADO]
+    grep -Ev '^\s*$' "$NFS_EXPORTS" 2>/dev/null | while IFS= read -r linha; do
+        if [[ "$linha" =~ ^\s*# ]]; then
+            echo "[DESATIVADO] ${linha#\#}"
+        else
+            echo "[ATIVO]      $linha"
+        fi
+    done || true
+}
+
+_listar_exports_ativos() {
     grep -Ev '^\s*(#|$)' "$NFS_EXPORTS" 2>/dev/null || true
+}
+
+_listar_exports_desativados() {
+    grep -E '^\s*#[^!]' "$NFS_EXPORTS" 2>/dev/null | sed 's/^\s*#\s*//' || true
 }
 
 _export_existe() {
     local path="$1"
     grep -Eq "^[[:space:]]*${path}[[:space:]]" "$NFS_EXPORTS" 2>/dev/null
+}
+
+_export_desativado() {
+    local path="$1"
+    grep -Eq "^[[:space:]]*#[[:space:]]*${path}[[:space:]]" "$NFS_EXPORTS" 2>/dev/null
 }
 
 _aplicar_exports() {
@@ -67,14 +88,13 @@ nfs_criar() {
 
 nfs_alterar() {
     title "Alterar export NFS"
-    _listar_exports | nl -w2 -s') '
+    _listar_exports_ativos | nl -w2 -s') '
     local path; ler path "Path do export" ""
-    _export_existe "$path" || { erro "Nao existe."; return 1; }
+    _export_existe "$path" || { erro "Nao existe ou esta desativado."; return 1; }
 
     local novas_opts
     ler novas_opts "Novas opcoes (ex: ro,sync,no_subtree_check)" "rw,sync,no_subtree_check"
     backup_file "$NFS_EXPORTS"
-    # Substituir a linha
     local rede
     rede=$(grep -E "^[[:space:]]*${path}[[:space:]]" "$NFS_EXPORTS" | awk '{print $2}' | sed 's/(.*//')
     sed -i "\|^[[:space:]]*${path}[[:space:]]|d" "$NFS_EXPORTS"
@@ -84,12 +104,22 @@ nfs_alterar() {
 
 nfs_desativar() {
     title "Desativar export (comentar)"
-    _listar_exports | nl -w2 -s') '
+    _listar_exports_ativos | nl -w2 -s') '
     local path; ler path "Path" ""
     _export_existe "$path" || { erro "Nao existe ou ja esta desativado."; return 1; }
     backup_file "$NFS_EXPORTS"
     sed -i "s|^\([[:space:]]*${path}[[:space:]]\)|# \1|" "$NFS_EXPORTS"
     _aplicar_exports "Export $path desativado"
+}
+
+nfs_ativar() {
+    title "Ativar export (descomentar)"
+    _listar_exports_desativados | nl -w2 -s') '
+    local path; ler path "Path" ""
+    _export_desativado "$path" || { erro "Nao existe nenhum export desativado com esse path."; return 1; }
+    backup_file "$NFS_EXPORTS"
+    sed -i "s|^[[:space:]]*#[[:space:]]*\(${path}[[:space:]]\)|\1|" "$NFS_EXPORTS"
+    _aplicar_exports "Export $path reativado"
 }
 
 nfs_eliminar() {
@@ -137,9 +167,10 @@ nfs_menu() {
   1) Criar export
   2) Alterar export
   3) Desativar export
-  4) Eliminar export
-  5) Listar exports
-  6) Testar mount local (mount -t nfs)
+  4) Ativar export
+  5) Eliminar export
+  6) Listar exports
+  7) Testar mount local (mount -t nfs)
   0) Voltar
 EOF
         local opc; ler opc "Opcao" "0"
@@ -147,9 +178,10 @@ EOF
             1) nfs_criar ;;
             2) nfs_alterar ;;
             3) nfs_desativar ;;
-            4) nfs_eliminar ;;
-            5) nfs_listar ;;
-            6) nfs_testar_mount_local ;;
+            4) nfs_ativar ;;
+            5) nfs_eliminar ;;
+            6) nfs_listar ;;
+            7) nfs_testar_mount_local ;;
             0) return 0 ;;
             *) warn "Opcao invalida" ;;
         esac
